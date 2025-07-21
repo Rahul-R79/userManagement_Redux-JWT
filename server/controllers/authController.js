@@ -1,6 +1,6 @@
 import User from "../model/User.js";
 
-export const signup = async(req, res, next)=>{
+export const signin = async(req, res, next)=>{
     const {userName, email, password} = req.body;
     const newUser = new User({userName, email, password});
     try{
@@ -9,6 +9,5 @@ export const signup = async(req, res, next)=>{
     }catch(err){
         next(err)
     }
-    console.log(newUser)
 }
 

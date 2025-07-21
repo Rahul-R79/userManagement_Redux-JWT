@@ -1,6 +1,121 @@
+import axios from "axios";
+import { useState } from "react"
+import { Link } from "react-router-dom"
+
 function SignIn(){
+    const [inputData, setInputData] = useState({});
+    const [error, setError] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e)=>{
+        setInputData({...inputData, [e.target.id] : e.target.value});
+        setError({...error, [e.target.id] : ''});
+    }
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault();
+        setLoading(true);
+        setError({});
+        try{
+            const response = await axios.post('http://localhost:3000/api/auth/signin', inputData);
+            console.log('backend response:', response.data);
+            setLoading(false);
+        }catch(error){
+            setLoading(false);
+            if(error.response && error.response.data.errors){
+                const errMap = {};
+                error.response.data.errors.forEach(element => {
+                    errMap[element.path] = element.msg;
+                });
+                setError(errMap);
+            }
+        }
+    }
     return(
-        <h1>signIn page</h1>
+        <div className="container">
+            <div className="row justify-content-center align-items-center min-vh-100">
+                <div className="col-md-6">
+                <div className="card shadow rounded-4">
+                    <div className="card-body p-4">
+                    <h2 className="text-center mb-4">Create an account</h2>
+                    <form onSubmit={handleSubmit} noValidate>
+                        {/* Username */}
+                        <div className="mb-3">
+                        <label htmlFor="username" className="form-label">Username</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="userName"
+                            name="userName"
+                            placeholder="Enter username"
+                            required
+                            autoComplete="userName"
+                            onChange={handleChange}
+                        />
+                        {error.userName && <small className="text-danger">{error.userName}</small>}
+                        </div>
+
+                        {/* Email */}
+                        <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email address</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="Enter email"
+                            autoComplete="email"
+                            required
+                            onChange={handleChange}
+                        />
+                        {error.email && <small className="text-danger">{error.email}</small>}
+                        </div>
+
+                        {/* Password */}
+                        <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Enter password"
+                            autoComplete="new-password"
+                            required
+                            onChange={handleChange}
+                        />
+                        {error.password && <small className="text-danger">{error.password}</small>}
+                        </div>
+
+                        {/* Confirm Password */}
+                        <div className="mb-3">
+                        <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm password"
+                            autoComplete="new-password"
+                            required
+                            onChange={handleChange}
+                        />
+                        {error.confirmPassword && <small className="text-danger">{error.confirmPassword}</small>}
+                        </div>
+                        <div className="mt-3 mb-3">
+                            <label>Already have an account? <Link to={'/'}>Login</Link></label>
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="d-grid">
+                        <button type="submit" className="btn btn-secondary" disabled={loading}>{loading ? 'loading...' : 'signup'}</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
     )
 }
 
