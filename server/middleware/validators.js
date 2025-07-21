@@ -13,9 +13,9 @@ export const validateSignin = [
     body('password')
         .notEmpty().withMessage('Password is required').bail()
         .isLength({min: 6}).withMessage('Password must be at least 6 characters')
-        .matches(/[a-z]/).withMessage('Passsword contains at least one lowercase letter')
+        .matches(/[a-z]/).withMessage('Password contains at least one lowercase letter')
         .matches(/[A-Z]/).withMessage('Password contains at least one uppercase letter')
-        .matches(/[@#$?_-]/).withMessage('Password contain at least one speacial character')
+        .matches(/[@#$?_-]/).withMessage('Password contain at least one special character')
         .matches(/[0-9]/).withMessage('Password contains atleast one number'),
     body('confirmPassword')
         .notEmpty().withMessage('Confirm password is required').bail()
@@ -26,8 +26,31 @@ export const validateSignin = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         }
         next();
     }
 ];
+
+export const validateLogin = [
+    body('email')
+    .notEmpty().withMessage('Email is Required').bail()
+    .isEmail().withMessage('Enter a valid email id')
+    .normalizeEmail(),
+
+    body('password')
+    .notEmpty().withMessage('Password is Required').bail()
+    .isLength({min: 6}).withMessage('Password must be at least 6 characters')
+    .matches(/[a-z]/).withMessage('Password contains at least one lowercase letter')
+    .matches(/[A-Z]/).withMessage('Password contains at least one uppercase letter')
+    .matches(/[@#$?_-]/).withMessage('Password contain at least one special character')
+    .matches(/[0-9]/).withMessage('Password contains atleast one number'),
+
+    (req, res, next)=>{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({errors: errors.array()})
+        }
+        next();
+    }
+]

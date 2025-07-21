@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 function SignIn(){
     const [inputData, setInputData] = useState({});
     const [error, setError] = useState({});
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleChange = (e)=>{
         setInputData({...inputData, [e.target.id] : e.target.value});
@@ -20,6 +23,7 @@ function SignIn(){
             const response = await axios.post('http://localhost:3000/api/auth/signin', inputData);
             console.log('backend response:', response.data);
             setLoading(false);
+            navigate('/');
         }catch(error){
             setLoading(false);
             if(error.response && error.response.data.errors){
@@ -28,6 +32,8 @@ function SignIn(){
                     errMap[element.path] = element.msg;
                 });
                 setError(errMap);
+            }else if(error.response.data.message){
+                setError({general: error.response.data.message});
             }
         }
     }
@@ -38,6 +44,7 @@ function SignIn(){
                 <div className="card shadow rounded-4">
                     <div className="card-body p-4">
                     <h2 className="text-center mb-4">Create an account</h2>
+                    {error.general && <p className="text-danger text-center">{error.general}</p>}
                     <form onSubmit={handleSubmit} noValidate>
                         {/* Username */}
                         <div className="mb-3">

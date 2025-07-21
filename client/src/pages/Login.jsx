@@ -1,6 +1,92 @@
+import axios from "axios";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function Login(){
+    const [inputvalue, setInputValue] = useState({});
+    const [error, setError] = useState(false);
+
+    const navigate = useNavigate();
+    
+    const handleInputvalue = (e)=>{
+        setInputValue({...inputvalue, [e.target.id] : e.target.value});
+        setError({...error, [e.target.id] : ''});
+    }
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault();
+        setError({});
+        try{
+            const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue);
+            console.log('backend response', response.data)
+            navigate('/home')
+        }catch(error){
+            if(error.response && error.response.data.errors){
+                const errMap = {};
+                error.response.data.errors.forEach(element => {
+                    errMap[element.path] = element.msg;
+                });
+                setError(errMap);
+            }else if(error.response.data.message){
+                setError({general: error.response.data.message})
+            }
+        }
+    }
+
     return(
-        <h1>Login Page</h1>
+        <div className="container">
+            <div className="row justify-content-center align-items-center min-vh-100">
+                <div className="col-md-6">
+                <div className="card shadow rounded-4">
+                    <div className="card-body p-4">
+                    <h2 className="text-center mb-4">Account Login</h2>
+                    {error.general && <p className="text-center text-danger">{error.general}</p>}
+                    <form noValidate onSubmit={handleSubmit}>
+                        {/* Email */}
+                        <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email address</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="Enter email"
+                            autoComplete="email"
+                            required
+                            onChange={handleInputvalue}
+                        />
+                        {error.email && <small className="text-danger">{error.email}</small>}
+                        </div>
+
+                        {/* Password */}
+                        <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Enter password"
+                            autoComplete="current-password"
+                            required
+                            onChange={handleInputvalue}
+                        />
+                        {error.password && <small className="text-danger">{error.password}</small>}
+                        </div>
+                        <div className="mt-3 mb-3">
+                            <label>Dont have an account? <Link to={'/signin'}>SignIn</Link></label>
+                        </div>
+                        {/* Submit Button */}
+                        <div className="d-grid">
+                        <button type="submit" className="btn btn-secondary">Login</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

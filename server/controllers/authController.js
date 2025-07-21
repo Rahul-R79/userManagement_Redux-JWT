@@ -4,8 +4,12 @@ import jwt from 'jsonwebtoken';
 
 export const signin = async(req, res, next)=>{
     const {userName, email, password} = req.body;
-    const newUser = new User({userName, email, password});
     try{
+        const existingUser = await User.findOne({email});
+        if(existingUser){
+            return res.status(400).json({message: 'User already exists with this email'});
+        }
+        const newUser = new User({userName, email, password});
         await newUser.save();
         res.status(201).json({message: 'user created successfully'});
     }catch(err){
