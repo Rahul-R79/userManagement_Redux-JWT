@@ -8,21 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 function Login(){
     const [inputvalue, setInputValue] = useState({});
     const {loading, error} = useSelector((state)=> state.user);
-    // const [error, setError] = useState(false);
-    // const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleInputvalue = (e)=>{
         setInputValue({...inputvalue, [e.target.id] : e.target.value});
-        // setError({...error, [e.target.id] : ''});
     }
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
         dispatch(loginUser())
-        // setError({});
         try{
             const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue);
             console.log('backend response', response.data);
@@ -35,12 +31,14 @@ function Login(){
                     errMap[element.path] = element.msg;
                 });
                 dispatch(loginFailure(errMap))
-            }else if(error.response.data.message){
+            }else if(error.response?.data?.message){
                 dispatch(loginFailure({general: error.response.data.message}));
+            }else{
+                dispatch(loginFailure({general: 'Network failure please try again later!'}))
             }
         }
     }
-
+    
     return(
         <div className="container">
             <div className="row justify-content-center align-items-center min-vh-100">

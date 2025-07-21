@@ -32,8 +32,10 @@ function SignIn(){
                     errMap[element.path] = element.msg;
                 });
                 setError(errMap);
-            }else if(error.response.data.message){
+            }else if(error.response?.data?.message){
                 setError({general: error.response.data.message});
+            }else{
+                setError({general: 'Network failure please try again later!'})
             }
         }
     }
