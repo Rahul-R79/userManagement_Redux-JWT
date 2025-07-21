@@ -2,24 +2,31 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { loginUser, loginFailure, loginSuccess } from "../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Login(){
     const [inputvalue, setInputValue] = useState({});
-    const [error, setError] = useState(false);
+    const {loading, error} = useSelector((state)=> state.user);
+    // const [error, setError] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
-    
+    const dispatch = useDispatch();
+
     const handleInputvalue = (e)=>{
         setInputValue({...inputvalue, [e.target.id] : e.target.value});
-        setError({...error, [e.target.id] : ''});
+        // setError({...error, [e.target.id] : ''});
     }
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        setError({});
+        dispatch(loginUser())
+        // setError({});
         try{
             const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue);
-            console.log('backend response', response.data)
+            console.log('backend response', response.data);
+            dispatch(loginSuccess(response.data))
             navigate('/home')
         }catch(error){
             if(error.response && error.response.data.errors){
@@ -27,9 +34,9 @@ function Login(){
                 error.response.data.errors.forEach(element => {
                     errMap[element.path] = element.msg;
                 });
-                setError(errMap);
+                dispatch(loginFailure(errMap))
             }else if(error.response.data.message){
-                setError({general: error.response.data.message})
+                dispatch(loginFailure({general: error.response.data.message}));
             }
         }
     }
@@ -79,7 +86,7 @@ function Login(){
                         </div>
                         {/* Submit Button */}
                         <div className="d-grid">
-                        <button type="submit" className="btn btn-secondary">Login</button>
+                        <button type="submit" className="btn btn-secondary" disabled={loading}>{loading ? "loading...." : "Login"}</button>
                         </div>
                     </form>
                     </div>
