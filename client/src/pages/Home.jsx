@@ -3,7 +3,9 @@ function Home(){
     return(
         <>
             <Header/>
-            <h1>Home page</h1>
+            <div className="d-flex justify-content-center align-items-center min-vh-100">
+                <h3>Welcome to userPage</h3>
+            </div>
         </>
     )
 }
