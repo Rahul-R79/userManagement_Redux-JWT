@@ -2,8 +2,9 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { loginUser, loginFailure, loginSuccess } from "../features/user/userSlice";
+import { loginUser, loginFailure, loginSuccess, resetError } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function Login(){
     const [inputvalue, setInputValue] = useState({});
@@ -11,6 +12,10 @@ function Login(){
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(resetError())
+    }, [dispatch]);
 
     const handleInputvalue = (e)=>{
         setInputValue({...inputvalue, [e.target.id] : e.target.value});
@@ -22,8 +27,8 @@ function Login(){
         try{
             const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue);
             console.log('backend response', response.data);
-            dispatch(loginSuccess(response.data))
-            navigate('/home')
+            dispatch(loginSuccess(response.data));
+            navigate('/home');
         }catch(error){
             if(error.response && error.response.data.errors){
                 const errMap = {};
