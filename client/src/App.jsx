@@ -23,7 +23,10 @@ function App(){
                     <Home/>
                 </ProtectedRoute>}>
                 </Route>
-                <Route path="/user-profile" element={<UserProfile/>}/>
+                <Route path="/user-profile" element={
+                <ProtectedRoute>
+                    <UserProfile/>
+                </ProtectedRoute>}/>
             </Routes>
         </BrowserRouter>
     )

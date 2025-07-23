@@ -25,7 +25,9 @@ function Login(){
         e.preventDefault();
         dispatch(loginUser())
         try{
-            const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue);
+            const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue, 
+                {withCredentials: true}
+            );
             console.log('backend response', response.data);
             dispatch(loginSuccess(response.data));
             navigate('/home');

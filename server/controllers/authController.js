@@ -1,6 +1,6 @@
 import User from "../model/User.js";
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { generateToken } from "../utils/jwt.js";
 
 export const signin = async(req, res, next)=>{
     const {userName, email, password} = req.body;
@@ -24,16 +24,25 @@ export const login = async(req, res, next)=>{
         if(!validUser) return res.status(400).json({message: 'Invalid email or password'});
         const validPassword = bcrypt.compareSync(password, validUser.password);
         if(!validPassword) return res.status(400).json({message: 'Invalid email or password'});
-        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
+        const token = generateToken({id: validUser._id});
         const {password: hashedPassword, ...rest} = validUser._doc;
-        res.cookie('access-token', token, 
-            {httpOnly: true, 
-            secure: true,
-            sameSite: 'Strict',
+        res.cookie('access-token', token, {
+            httpOnly: true, 
+            secure: false,
+            sameSite: 'Lax',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         res.status(200).json(rest);
     }catch(err){
         next(err);
     }
+}
+
+export const logout = async(req, res, next)=>{
+    res.clearCookie('access-token', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'Lax'
+    });
+    res.status(200).json({message: 'Logged out successfully'});
 }
