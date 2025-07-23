@@ -20,7 +20,9 @@ function SignIn(){
         setLoading(true);
         setError({});
         try{
-            const response = await axios.post('http://localhost:3000/api/auth/signin', inputData);
+            const response = await axios.post('http://localhost:3000/api/auth/signin', inputData, 
+                {withCredentials: true}
+            );
             console.log('backend response:', response.data);
             setLoading(false);
             navigate('/');

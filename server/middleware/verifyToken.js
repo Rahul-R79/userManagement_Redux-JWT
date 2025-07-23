@@ -1,4 +1,4 @@
-import { verifyToken } from "../utils/jwt";
+import { verifyToken } from "../utils/jwt.js";
 
 export const ProtectRoute = (req, res, next)=>{
     const token = req.cookies["access-token"];
