@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
     const [inputValue, setInputValue] = useState({});
-    const { loginLoading, loginError, currentUser } = useSelector((state) => state.user);
+    const {loginLoading, loginError, currentUser} = useSelector((state) => state.user);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -37,6 +37,7 @@ function Login() {
                 { withCredentials: true }
             );
             dispatch(loginSuccess(response.data.user));
+            console.log(response.data);
         } catch (error) {
             if (error.response?.data?.errors) {
                 const errMap = {};

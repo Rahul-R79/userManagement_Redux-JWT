@@ -5,7 +5,7 @@ export const seedAdmin = async () => {
         const existingAdmin = await User.findOne({ email: process.env.ADMIN_EMAIL });
 
         if (existingAdmin) {
-            console.log("Admin already exists:", existingAdmin.email);
+            console.log("Admin already exists");
             return;
         }
 

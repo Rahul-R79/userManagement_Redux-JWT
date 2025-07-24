@@ -32,11 +32,7 @@ export const login = async(req, res, next)=>{
             sameSite: 'Strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.status(200).json({
-            message: 'Login sucessful',
-            token,
-            user: rest
-        });
+        res.status(200).json({message: 'Login sucessful', user: rest}); 
     }catch(err){
         next(err);
     }

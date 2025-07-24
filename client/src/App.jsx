@@ -8,6 +8,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { PublicRoute } from "./components/PublicRoute";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import CreateUser from "./pages/admin/CreateUser";
 
 function App() {
     return (
@@ -48,6 +49,11 @@ function App() {
                         <Dashboard />
                     </ProtectedAdminRoute>
                 } />
+                <Route path="/admin/create-user" element={
+                    <ProtectedAdminRoute>
+                        <CreateUser />
+                    </ProtectedAdminRoute>
+                } />            
             </Routes>
         </BrowserRouter>
     );
