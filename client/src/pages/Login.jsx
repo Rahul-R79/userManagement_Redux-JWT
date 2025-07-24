@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 function Login(){
     const [inputvalue, setInputValue] = useState({});
-    const {loading, error} = useSelector((state)=> state.user);
+    const {loginLoading, loginError} = useSelector((state)=> state.user);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -53,7 +53,7 @@ function Login(){
                 <div className="card shadow rounded-4">
                     <div className="card-body p-4">
                     <h2 className="text-center mb-4">Account Login</h2>
-                    {error.general && <p className="text-center text-danger">{error.general}</p>}
+                    {loginError.general && <p className="text-center text-danger">{loginError.general}</p>}
                     <form noValidate onSubmit={handleSubmit}>
                         {/* Email */}
                         <div className="mb-3">
@@ -68,7 +68,7 @@ function Login(){
                             required
                             onChange={handleInputvalue}
                         />
-                        {error.email && <small className="text-danger">{error.email}</small>}
+                        {loginError.email && <small className="text-danger">{loginError.email}</small>}
                         </div>
 
                         {/* Password */}
@@ -84,14 +84,14 @@ function Login(){
                             required
                             onChange={handleInputvalue}
                         />
-                        {error.password && <small className="text-danger">{error.password}</small>}
+                        {loginError.password && <small className="text-danger">{loginError.password}</small>}
                         </div>
                         <div className="mt-3 mb-3">
                             <label>Dont have an account? <Link to={'/signin'}>SignIn</Link></label>
                         </div>
                         {/* Submit Button */}
                         <div className="d-grid">
-                        <button type="submit" className="btn btn-secondary" disabled={loading}>{loading ? "loading...." : "Login"}</button>
+                        <button type="submit" className="btn btn-secondary" disabled={loginLoading}>{loginLoading ? "loading...." : "Login"}</button>
                         </div>
                     </form>
                     </div>
