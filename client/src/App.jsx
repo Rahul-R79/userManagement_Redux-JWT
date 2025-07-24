@@ -1,10 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import UserProfile from "./pages/UserProfile";
-import SignIn from "./pages/SignIn"
+import Login from "./pages/user/Login";
+import Home from "./pages/user/Home";
+import UserProfile from "./pages/user/UserProfile";
+import SignIn from "./pages/user/SignIn";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { PublicRoute } from "./components/PublicRoute";
+import Dashboard from "./pages/admin/Dashboard";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute"
 
 function App(){
     return(
@@ -27,6 +29,9 @@ function App(){
                 <ProtectedRoute>
                     <UserProfile/>
                 </ProtectedRoute>}/>
+                <Route path="/dashboard" element={<ProtectedAdminRoute>
+                    <Dashboard/>
+                </ProtectedAdminRoute>}/>
             </Routes>
         </BrowserRouter>
     )

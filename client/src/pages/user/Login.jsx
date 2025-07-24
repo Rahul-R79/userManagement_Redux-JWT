@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { loginUser, loginFailure, loginSuccess, resetError } from "../features/user/userSlice";
+import { loginUser, loginFailure, loginSuccess, resetError } from "../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -23,14 +23,18 @@ function Login(){
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        dispatch(loginUser())
+        dispatch(loginUser());
         try{
             const response = await axios.post('http://localhost:3000/api/auth/login', inputvalue, 
                 {withCredentials: true}
             );
-            console.log('backend response', response.data);
-            dispatch(loginSuccess(response.data));
-            navigate('/home');
+            console.log('backend response', response.data.user);
+            dispatch(loginSuccess(response.data.user));
+            if(response.data.user.role === 'admin'){
+                navigate('/dashboard');
+            }else{
+                navigate('/home');
+            }
         }catch(error){
             if(error.response && error.response.data.errors){
                 const errMap = {};
@@ -55,7 +59,6 @@ function Login(){
                     <h2 className="text-center mb-4">Account Login</h2>
                     {loginError.general && <p className="text-center text-danger">{loginError.general}</p>}
                     <form noValidate onSubmit={handleSubmit}>
-                        {/* Email */}
                         <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email address</label>
                         <input
@@ -70,8 +73,6 @@ function Login(){
                         />
                         {loginError.email && <small className="text-danger">{loginError.email}</small>}
                         </div>
-
-                        {/* Password */}
                         <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
                         <input
@@ -89,7 +90,6 @@ function Login(){
                         <div className="mt-3 mb-3">
                             <label>Dont have an account? <Link to={'/signin'}>SignIn</Link></label>
                         </div>
-                        {/* Submit Button */}
                         <div className="d-grid">
                         <button type="submit" className="btn btn-secondary" disabled={loginLoading}>{loginLoading ? "loading...." : "Login"}</button>
                         </div>

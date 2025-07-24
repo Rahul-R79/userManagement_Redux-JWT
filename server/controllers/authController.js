@@ -24,7 +24,7 @@ export const login = async(req, res, next)=>{
         if(!validUser) return res.status(400).json({message: 'Invalid email or password'});
         const validPassword = bcrypt.compareSync(password, validUser.password);
         if(!validPassword) return res.status(400).json({message: 'Invalid email or password'});
-        const token = generateToken({id: validUser._id});
+        const token = generateToken({id: validUser._id, role: validUser.role});
         const {password: hashedPassword, ...rest} = validUser._doc;
         res.cookie('access-token', token, {
             httpOnly: true, 
@@ -32,7 +32,11 @@ export const login = async(req, res, next)=>{
             sameSite: 'Strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.status(200).json(rest);
+        res.status(200).json({
+            message: 'Login sucessful',
+            token,
+            user: rest
+        });
     }catch(err){
         next(err);
     }
@@ -46,3 +50,4 @@ export const logout = async(req, res, next)=>{
     });
     res.status(200).json({message: 'Logged out successfully'});
 }
+

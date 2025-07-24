@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {updateProfile, updateProfileStart, updateProfileFailure} from "../features/user/userSlice";
-import "../index.css";
+import {updateProfile, updateProfileStart, updateProfileFailure} from "../../features/user/userSlice";
+import "../../index.css";
 
 function UserProfile() {
     const { currentUser, updateLoading, updateError } = useSelector((state) => state.user);
