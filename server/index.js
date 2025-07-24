@@ -6,6 +6,7 @@ import userRouter from './routes/userRoutes.js';
 import errorHandler from './middleware/errorMiddleware.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import notFound from './middleware/pageNotFound.js';
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ ConnectDB();
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRouter);
 
+app.use(notFound);
 app.use(errorHandler);
 
 app.listen(3000, () => {
