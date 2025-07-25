@@ -22,3 +22,15 @@ export const deleteUser = async(req, res)=>{
         res.status(500).json({message: 'error in deleting user'});
     }
 }
+
+export const searchUser = async(req, res)=>{
+    try{
+        const search = req.query.search || '';
+        const regex = new RegExp(search, 'i');
+
+        const users = await User.find({$or: [{userName: {$regex: regex}}, {email: {$regex: regex}}]}).select('-password');
+        res.status(200).json(users);
+    }catch(error){
+        res.status(500).json({message: 'error in search', error});
+    }
+}

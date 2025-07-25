@@ -7,11 +7,15 @@ function Dashboard() {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [userToDelete, setUserToDelete] = useState(null); 
+    const [searchUser, setSearchUser] = useState('');
     const usersPerPage = 3;
 
     const fetchUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/admin/users", { withCredentials: true });
+            const endpoint = searchUser.trim() ? 
+                `http://localhost:3000/api/admin/search-users?search=${searchUser}` 
+                : `http://localhost:3000/api/admin/users`
+            const res = await axios.get(endpoint, { withCredentials: true });
             setUsers(res.data);
         } catch (err) {
             console.error("Error fetching users", err.message);
@@ -20,7 +24,7 @@ function Dashboard() {
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [searchUser]);
 
     const deleteUser = async () => {
         if (!userToDelete) return;
@@ -49,7 +53,8 @@ function Dashboard() {
                     </div>
                     <div className="col-md-4 col-sm-12 mb-2 mb-md-0">
                         <div className="input-group">
-                            <input type="search" className="form-control" placeholder="Search user..." aria-label="Search user" />
+                            <input type="search" className="form-control" placeholder="Search user..." aria-label="Search user" value={searchUser}
+                            onChange={(e)=> {setSearchUser(e.target.value); setCurrentPage(1)}}/>
                             <span className="input-group-text bg-white">
                                 <i className="bi bi-search"></i>
                             </span>

@@ -81,7 +81,7 @@ function CreateUser(){
                             {error.confirmPassword && <small className="text-danger">{error.confirmPassword}</small>}
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn btn-secondary" disabled={loading}>{loading ? 'loading...' : 'signup'}</button>
+                            <button type="submit" className="btn btn-secondary" disabled={loading}>{loading ? 'loading...' : 'Create user'}</button>
                         </div>
                     </form>
                     </div>
