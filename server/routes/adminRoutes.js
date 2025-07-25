@@ -1,3 +1,5 @@
+//admin page routes
+
 import express from 'express';
 import { isAdmin } from '../middleware/isAdmin.js';
 import { deleteUser, getSingleUser, getUsers, searchUser, updateUser } from '../controllers/adminController.js';

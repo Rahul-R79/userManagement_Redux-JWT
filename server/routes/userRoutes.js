@@ -1,3 +1,5 @@
+//user profile route
+
 import express from 'express';
 import {getUserProfile, updateUserProfile} from '../controllers/userController.js';
 import upload from '../utils/cloudinaryStorage.js';

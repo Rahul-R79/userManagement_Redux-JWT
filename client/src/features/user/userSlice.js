@@ -1,3 +1,5 @@
+//redux user state management slice
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

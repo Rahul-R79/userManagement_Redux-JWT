@@ -1,5 +1,6 @@
 import User from "../model/User.js";
 
+//get all the users
 export const getUsers = async(req, res)=>{
     try{
         const users = await User.find({role: {$ne: 'admin'}}, '-password');
@@ -9,6 +10,7 @@ export const getUsers = async(req, res)=>{
     }
 }
 
+//delete a user
 export const deleteUser = async(req, res)=>{
     try{
         const userId = req.params.id;
@@ -23,6 +25,7 @@ export const deleteUser = async(req, res)=>{
     }
 }
 
+//search a user
 export const searchUser = async(req, res)=>{
     try{
         const search = req.query.search || '';
@@ -35,6 +38,7 @@ export const searchUser = async(req, res)=>{
     }
 }
 
+//get a single user for edit profile
 export const getSingleUser = async(req, res)=>{
     try{
         const userId = req.params.id;
@@ -45,6 +49,7 @@ export const getSingleUser = async(req, res)=>{
     }
 }
 
+//update userr profile
 export const updateUser = async(req, res)=>{
     try{
         const {userName, email, profileImage} = req.body;

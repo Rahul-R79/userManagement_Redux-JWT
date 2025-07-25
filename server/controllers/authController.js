@@ -2,6 +2,7 @@ import User from "../model/User.js";
 import bcrypt from 'bcrypt';
 import { generateToken } from "../utils/jwt.js";
 
+//signup controller
 export const signin = async(req, res, next)=>{
     const {userName, email, password} = req.body;
     try{
@@ -17,6 +18,7 @@ export const signin = async(req, res, next)=>{
     }
 }
 
+//login controller
 export const login = async(req, res, next)=>{
     const {email, password} = req.body;
     try{
@@ -38,6 +40,7 @@ export const login = async(req, res, next)=>{
     }
 }
 
+//logout controller
 export const logout = async(req, res, next)=>{
     res.clearCookie('access-token', {
         httpOnly: true,

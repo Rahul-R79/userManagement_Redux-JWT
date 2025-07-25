@@ -1,3 +1,5 @@
+//login, signin, logout routes
+
 import express from 'express';
 const router = express.Router();
 import {login, signin, logout} from '../controllers/authController.js';

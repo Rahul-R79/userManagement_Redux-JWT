@@ -15,6 +15,8 @@ const app = express();
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser());
+
+//cors middleware for fontend and backend communication
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
@@ -22,6 +24,7 @@ app.use(cors({
 
 ConnectDB();
 
+//api
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRouter);
 app.use('/api/admin', adminRoutes);

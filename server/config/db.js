@@ -1,3 +1,5 @@
+// database configuration
+
 import mongoose from "mongoose";
 import { seedAdmin } from "../seed/seedAdmin.js";
 

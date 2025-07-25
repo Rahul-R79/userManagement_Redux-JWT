@@ -1,3 +1,5 @@
+//verify jwt token middleware
+
 import { verifyToken } from "../utils/jwt.js";
 
 export const ProtectRoute = (req, res, next)=>{

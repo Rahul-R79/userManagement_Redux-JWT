@@ -1,3 +1,5 @@
+//express validation middleware
+
 import { body, validationResult } from "express-validator";
 
 const userNameValidator = body('userName')

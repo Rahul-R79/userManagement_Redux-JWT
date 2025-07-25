@@ -1,3 +1,5 @@
+//home page of user
+
 import Header from "../../components/Header";
 function Home(){
     return(

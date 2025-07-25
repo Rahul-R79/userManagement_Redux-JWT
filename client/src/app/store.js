@@ -1,3 +1,5 @@
+//redux store creation
+
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "../features/user/userSlice";
 import persistReducer from "redux-persist/es/persistReducer";

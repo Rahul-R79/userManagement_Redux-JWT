@@ -1,5 +1,6 @@
 import User from "../model/User.js";
 
+//userprofile controller
 export const getUserProfile = async(req, res, next)=>{
     try{
         const user = await User.findById(req.user.id).select('-password');
@@ -10,6 +11,7 @@ export const getUserProfile = async(req, res, next)=>{
     }
 }
 
+//update userProfile controller
 export const updateUserProfile = async(req, res, next)=>{
     const {name} = req.body;
     const image = req.file?.path;

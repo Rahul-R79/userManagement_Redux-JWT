@@ -1,3 +1,5 @@
+//token verification for admin
+
 export const isAdmin = async(req, res, next)=>{
     try{
         if(req.user?.role === 'admin'){
