@@ -9,6 +9,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { PublicRoute } from "./components/PublicRoute";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import CreateUser from "./pages/admin/CreateUser";
+import EditUser from "./pages/admin/EditUser";
 
 function App() {
     return (
@@ -54,6 +55,11 @@ function App() {
                         <CreateUser />
                     </ProtectedAdminRoute>
                 } />            
+                <Route path="/admin/edit-user/:id" element={
+                    <ProtectedAdminRoute>
+                        <EditUser/>
+                    </ProtectedAdminRoute>
+                } />
             </Routes>
         </BrowserRouter>
     );

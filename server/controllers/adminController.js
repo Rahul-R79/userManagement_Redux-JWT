@@ -34,3 +34,28 @@ export const searchUser = async(req, res)=>{
         res.status(500).json({message: 'error in search', error});
     }
 }
+
+export const getSingleUser = async(req, res)=>{
+    try{
+        const userId = req.params.id;
+        const user = await User.findById(userId).select('-password');
+        res.status(200).json(user);
+    }catch(error){
+        res.status(500).json({message: 'error in fetching user', error});
+    }
+}
+
+export const updateUser = async(req, res)=>{
+    try{
+        const {userName, email, profileImage} = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, 
+            {userName, email, profileImage}, {new: true, runValidators: true}
+        );
+
+        if(!updatedUser) return res.status(404).json({message: 'user not found'});
+        res.status(200).json({message: 'user updated'});
+    }catch(error){
+        res.status(500).json({message: 'eroor updating user'});
+    }
+}

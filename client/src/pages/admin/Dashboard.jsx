@@ -83,7 +83,7 @@ function Dashboard() {
                                     <h5 className="card-title">{user.userName}</h5>
                                     <p className="card-text text-muted">{user.email}</p>
                                     <div>
-                                        <button className="btn btn-sm btn-info me-2">Edit</button>
+                                        <Link className="btn btn-sm btn-info me-2" to={`/admin/edit-user/${user._id}`}>Edit</Link>
                                         <button 
                                             className="btn btn-sm btn-danger" 
                                             data-bs-toggle="modal" 
